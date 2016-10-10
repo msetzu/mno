@@ -18,13 +18,14 @@ R = A;
 Q = eye(size(A)(1))
 
 for k = 1:size(A)(1) - 1
-  h = householder_reflector(A(k, k + 1:))
-  h_size = size(A)(1) - size(h)(1)
-  Ii = eye(h_size)
+  h = householder_reflector(A(k:, k));
+  h_size = size(A)(1) - size(h)(1);
+  Ii = eye(h_size);
   
   Qi = [Ii : zeros(size(A)(2) - h_size, h_size);
-       zeros(size(A)(2) - h_size, h_size) : h]
-  R = R * Qi
+       zeros(size(A)(2) - h_size, h_size) : h];
+  Q = Q*Qi;
+  R = R * Qi;
 end
 
 %Now take any other matrix at your choice M ∈ R2×2

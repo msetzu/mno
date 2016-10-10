@@ -1,38 +1,49 @@
-## Copyright (C) 2016
-##
+## Copyright (C) 2016 
+## 
 ## This program is free software; you can redistribute it and/or modify it
 ## under the terms of the GNU General Public License as published by
 ## the Free Software Foundation; either version 3 of the License, or
 ## (at your option) any later version.
-##
+## 
 ## This program is distributed in the hope that it will be useful,
 ## but WITHOUT ANY WARRANTY; without even the implied warranty of
 ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ## GNU General Public License for more details.
-##
+## 
 ## You should have received a copy of the GNU General Public License
 ## along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-## -*- texinfo -*-
-## @deftypefn {Function File} {@var{retval} =} householder_reflector (@var{input1}, @var{input2})
+## -*- texinfo -*- 
+## @deftypefn {Function File} {@var{retval} =} myQR (@var{input1}, @var{input2})
 ##
 ## @seealso{}
 ## @end deftypefn
 
 ## Author:  <tia@HP>
-## Created: 2016-09-30
+## Created: 2016-10-04
 
-function [H_k] = householder_reflector (vector)
-  m = size(vector)(1);
-  n = size(vector)(2);
-
-  vector_norm = norm(vector);
-
-  I = eye(m);
-  % canonical base
-  e_k = eye(m)(:,1);
-  reflection_vector = vector + sign(vector(1)) * vector_norm * e_k;
-  reflection_vector_norm = norm(reflection_vector);
-
-  H_k = I - (2 / reflection_vector_norm(1) ^ 2) * (reflection_vector * ctranspose(reflection_vector));
+function [Q, R] = myQR (A)
+  m = size(A)(1);
+  n = size(A)(2);
+  Q = eye(m);
+  R = A;
+  
+  for k = 1:n
+      vector = R(k:end,k)
+      I_k = eye(k - 1);
+      
+      H_k = householder_reflector(vector);
+      a = I_k
+      b = zeros(k - 1, n - k - 1)
+      c = zeros(m - k - 1, k - 1)
+      d = H_k(1:end,1:end)
+      H_k
+      e = [I_k b]
+      f = [c H_k]
+      Q_k = [I_k b; c H_k]
+      Q = Q * Q_k
+      R_k = H_k * R(k:end, k:end)
+  end
+  
+  R = R_k;
 endfunction
