@@ -111,3 +111,21 @@ for i = 1:k
   end
 end
 ```
+
+## Lagrangian relaxation
+The Lagrangian relaxation is the minimum of the Lagrangian function.
+As such, we *usually* (not always) are able to find the minimum `x` quite easily (quadratic Lagrangians come to mind), but replacing it in the Lagrangian function is time-consuming.
+Matlab has a package, `subs` that deals with assigning values to variables in an expression and reduce it to the minimum number of terms.
+
+```matlab
+lagrangian = x2^2*(l2 - 1) - x1*(2*l1 - 8) + x1^2*(l1 - 4) - 2*x2*(l2 + 1)
+```
+
+With a minimum in `x = [1, (1+l2)/(-1+l2)]` we can substitute those values in the Lagrangian:
+```matlab
+>> subs(lagrangian, [x1, x2], [1, (1+l2)/(-1+l2)])
+
+ans =
+
+4 - (l2 + 1)^2/(l2 - 1) - l1
+```
