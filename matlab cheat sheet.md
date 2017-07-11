@@ -118,14 +118,21 @@ As such, we *usually* (not always) are able to find the minimum `x` quite easily
 Matlab has a package, `subs` that deals with assigning values to variables in an expression and reduce it to the minimum number of terms.
 
 ```matlab
-lagrangian = x2^2*(l2 - 1) - x1*(2*l1 - 8) + x1^2*(l1 - 4) - 2*x2*(l2 + 1)
+lagrangian = x2^2*(l2 - 1) - x1*(2*l1 - 8) + x1^2*(l1 - 4) - 2*x2*(l2 + 1);
 ```
-
+Since we have a quadratic Lagrangian we can minimize by setting the gradient to `0`.
+We can get the gradient and get its unique solution (we have two variables and two equations) with
+```matlab
+gr_lagrangian = gradient(lagrangian, [x1 x2]);
+res = solve([gr_lagrangian(1) gr_lagrangian(2)], [x1 x2]);
+```
 With a minimum in `x = [1, (1+l2)/(-1+l2)]` we can substitute those values in the Lagrangian:
 ```matlab
->> subs(lagrangian, [x1, x2], [1, (1+l2)/(-1+l2)])
+>> subs(lagrangian, [x1, x2], [res.x1, res.x2])
 
 ans =
 
 4 - (l2 + 1)^2/(l2 - 1) - l1
 ```
+**NB:** Solve returns a *structure of vectors* when you have more than one solution, and a *map* when it has a single solution.
+Such map is accessed through `map.var` as shown in the case of `res.x1`.
