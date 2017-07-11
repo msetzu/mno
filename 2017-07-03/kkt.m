@@ -16,6 +16,23 @@ for i = 1:k
     l2 = res.l2(i);
     
     if l1 >= 0 && l2 >= 0 && x1^2 - 2*x1 <= 0 && x2^2 - 2*x2 <= 0
-        fprintf('%f\t %f\t %f\t %f\n', x1, x2, l1, l2);
+        fprintf('Minimum: %f\t %f\t %f\t %f\n', x1, x2, l1, l2);
     end
 end
+
+% We previously assigned values to x1, x2, l1, l2 (lines 13-16), hence we
+% need to re-state that those are variables with syms.
+syms x1 x2 l1 l2;
+
+foo = -4*x1^2 -x2^2 +8*x1 -2*x2;
+g1 = x1^2 -2*x1;
+g2 = x2^2 -2*x2;
+lagrangian = foo + l1*g1 + l2*g2;
+gr_lagrangian = gradient(lagrangian, [x1, x2]);
+min_x_lagrangian = solve([gr_lagrangian(1) gr_lagrangian(2)], [x1 x2]);
+min_x_lagrangian.x1
+min_x_lagrangian.x2
+fprintf('\n');
+lagrangian_relaxation = subs(lagrangian, [x1 x2], [min_x_lagrangian.x1 min_x_lagrangian.x2]);
+lagrangian_relaxation
+fprintf('\n');
