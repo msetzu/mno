@@ -38,7 +38,7 @@ fprintf('\n');
 gr_lagrangian_relaxation = gradient(lagrangian_relaxation, [l1 l2]);
 v = subs(gr_lagrangian_relaxation, [l1 l2], [2 4]);
 if v(1) == 0 && v(2) == 0
-    fprintf('Null gradient, valid result: %f\n', v(1), v(2));
+    fprintf('Null gradient, valid result: %f\n', subs(lagrangian_relaxation, [l1 l2], [2 4]));
 else
-    fprintf('Not null gradient: %f %f \n', v(1), v(2));
+    fprintf('Not null gradient: %f %f \n', subs(lagrangian_relaxation, [l1 l2], [2 4]));
 end
