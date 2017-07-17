@@ -33,6 +33,12 @@ min_x_lagrangian = solve([gr_lagrangian(1) gr_lagrangian(2)], [x1 x2]);
 min_x_lagrangian.x1
 min_x_lagrangian.x2
 fprintf('\n');
-lagrangian_relaxation = subs(lagrangian, [x1 x2], [min_x_lagrangian.x1 min_x_lagrangian.x2]);
-lagrangian_relaxation
+lagrangian_relaxation = subs(lagrangian, [x1 x2], [min_x_lagrangian.x1 min_x_lagrangian.x2])
 fprintf('\n');
+gr_lagrangian_relaxation = gradient(lagrangian_relaxation, [l1 l2]);
+v = subs(gr_lagrangian_relaxation, [l1 l2], [2 4]);
+if v(1) == 0 && v(2) == 0
+    fprintf('Null gradient, valid result: %f\n', v(1), v(2));
+else
+    fprintf('Not null gradient: %f %f \n', v(1), v(2));
+end

@@ -32,3 +32,10 @@ min_x_lagrangian.x1
 min_x_lagrangian.x2
 fprintf('Lagrangian relaxation\n');
 lagrangian_relaxation = subs(lagrangian, [x1 x2], [min_x_lagrangian.x1 min_x_lagrangian.x2])
+fprintf('Gradient of the Lagrangian on (0, 1)\n');
+gradient_relaxation = subs(gradient(lagrangian_relaxation, [l1 l2]), [l1 l2], [0 1]);
+if gradient_relaxation(1) == 0 && gradient_relaxation(2) == 0
+    fprintf('Null gradient, optimal solution\n');
+else
+    fprintf('Gradient not null, not an optimal solution: %f %f\n', gradient_relaxation(1), gradient_relaxation(2));
+end
